@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class Countries {
-	public static final String[][] DATA = {};
+	public static final String[][] DATA = {{"ALGERIA", "Algiers"}, {"ANGOLA","luanda"}};
 	
 	private static class FlyweightMap extends AbstractMap<String, String>{
 		
@@ -78,7 +78,7 @@ public class Countries {
 			}
 			
 		}
-		
+		//select函数创建复写了entrySet的匿名内部类，返回指定size大小的EntrySet，size实际上在迭代器中起作用。
 		private static Set<Map.Entry<String, String>> entries = new EntrySet(DATA.length);
 
 		@Override
@@ -89,6 +89,7 @@ public class Countries {
 	
 	static Map<String, String> select(final int size){
 		return new FlyweightMap() {
+			//这里复写了FlyweightMap中entrySet方法，这个匿名内部类就是它的子类，并且为了需求复写了该方法
 			public Set<Map.Entry<String, String>> entrySet(){
 				return new EntrySet(size);
 			}
@@ -107,9 +108,17 @@ public class Countries {
 	
 	static List<String> names = new ArrayList<>(map.keySet());
 	
+	public static List<String> names(){
+		return names;
+	}
+	
+	public static List<String> names(int size){
+		return new ArrayList<>(select(size).keySet());
+	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
+		System.out.println(capitals(2));
 	}
 
 }
